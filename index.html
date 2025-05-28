@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Isn't Funny</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>AI Isn't Funny 🤖</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="donate.html">Donate</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="latest-comic">
+      <h2>Latest Comic</h2>
+      <img src="comics/latest.jpg" alt="Latest AI Comic" id="comic-img" />
+      <p id="comic-prompt">Prompt: <em>Loading...</em></p>
+    </section>
+
+    <section id="submit">
+      <h2>Submit a Suggestion</h2>
+      <input type="text" id="suggestion-input" placeholder="e.g. A cat running for president">
+      <button onclick="submitSuggestion()">Submit</button>
+    </section>
+
+    <section id="suggestions">
+      <h2>Vote on Suggestions</h2>
+      <ul id="suggestion-list"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 AI Isn't Funny</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
