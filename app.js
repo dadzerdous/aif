@@ -7,7 +7,9 @@ let suggestions = JSON.parse(localStorage.getItem('suggestions')) || [
 function saveSuggestions() {
   localStorage.setItem('suggestions', JSON.stringify(suggestions));
 }
-
+function getTopSuggestion() {
+  return suggestions.reduce((top, curr) => curr.likes > top.likes ? curr : top, suggestions[0]);
+}
 function renderSuggestions() {
   const list = document.getElementById('suggestion-list');
   list.innerHTML = '';
