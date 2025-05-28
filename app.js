@@ -1,7 +1,12 @@
-const suggestions = [
+// Load suggestions from localStorage or use default
+let suggestions = JSON.parse(localStorage.getItem('suggestions')) || [
   { text: "A toaster uprising", likes: 2 },
   { text: "Elon Musk vs. AI duck", likes: 5 }
 ];
+
+function saveSuggestions() {
+  localStorage.setItem('suggestions', JSON.stringify(suggestions));
+}
 
 function renderSuggestions() {
   const list = document.getElementById('suggestion-list');
@@ -22,12 +27,14 @@ function submitSuggestion() {
   if (text.length > 0) {
     suggestions.push({ text, likes: 0 });
     input.value = '';
+    saveSuggestions();
     renderSuggestions();
   }
 }
 
 function likeSuggestion(index) {
   suggestions[index].likes++;
+  saveSuggestions();
   renderSuggestions();
 }
 
