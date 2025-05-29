@@ -12,7 +12,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCoXoNXWZABE3RLKZ4A5Q5MD4eI_ikaXq4",
+  apiKey: "",
   authDomain: "ai-isn-t-funny.firebaseapp.com",
   projectId: "ai-isn-t-funny",
   storageBucket: "ai-isn-t-funny.appspot.com",
