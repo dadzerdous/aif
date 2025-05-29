@@ -68,7 +68,7 @@ async function loadTopSuggestion() {
 
 async function updateComicImage() {
   try {
-    const response = await fetch("https://5249388e-19bf-4cd3-8dff-d129115982f6-00-o5yb1ky7pz4o.spock.replit.dev/generate", {
+    // const response = await fetch("https://5249388e-19bf-4cd3-8dff-d129115982f6-00-o5yb1ky7pz4o.spock.replit.dev/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -92,6 +92,11 @@ async function updateComicImage() {
 }
 
 let countdownSeconds = 300; // 5 minutes
+
+function loadLatestComic() {
+  const comicImg = document.getElementById("comic-img");
+  comicImg.src = "https://dadzerdous.github.io/aif/comics/latest.jpg";
+}
 
 function startCountdown() {
   console.log("🚀 Countdown started");
@@ -125,5 +130,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   await renderSuggestions();
   await loadTopSuggestion();
   await updateComicImage();
+  loadLatestComic();
   startCountdown();
 });
