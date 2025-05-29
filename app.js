@@ -120,7 +120,7 @@ function startCountdown() {
 
 window.submitSuggestion = submitSuggestion;
 window.likeSuggestion = likeSuggestion;
-
+document.getElementById("submit-button").addEventListener("click", submitSuggestion);
 document.addEventListener("DOMContentLoaded", async () => {
   await renderSuggestions();
   await loadTopSuggestion();
