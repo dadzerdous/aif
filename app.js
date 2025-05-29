@@ -1,43 +1,69 @@
-// Load suggestions from localStorage or use default
-let suggestions = JSON.parse(localStorage.getItem('suggestions')) || [
-  { text: "A toaster uprising", likes: 2 },
-  { text: "Elon Musk vs. AI duck", likes: 5 }
-];
+<script type="module">
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    updateDoc,
+    doc,
+    increment,
+    query,
+    orderBy
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-function saveSuggestions() {
-  localStorage.setItem('suggestions', JSON.stringify(suggestions));
-}
-function getTopSuggestion() {
-  return suggestions.reduce((top, curr) => curr.likes > top.likes ? curr : top, suggestions[0]);
-}
-function renderSuggestions() {
-  const list = document.getElementById('suggestion-list');
-  list.innerHTML = '';
-  suggestions.forEach((sugg, index) => {
-    const li = document.createElement('li');
-    li.innerHTML = `
-      ${sugg.text} — ${sugg.likes} likes
-      <button onclick="likeSuggestion(${index})">Like</button>
-    `;
-    list.appendChild(li);
-  });
-}
+  const db = window.AIF_DB; // Set by your firebaseConfig script in index.html
+  const suggestionsRef = collection(db, "suggestions");
 
-function submitSuggestion() {
-  const input = document.getElementById('suggestion-input');
-  const text = input.value.trim();
-  if (text.length > 0) {
-    suggestions.push({ text, likes: 0 });
-    input.value = '';
-    saveSuggestions();
+  function getTopSuggestion(suggestions) {
+    return suggestions.reduce((top, curr) =>
+      curr.likes > top.likes ? curr : top,
+      suggestions[0]
+    );
+  }
+
+  async function renderSuggestions() {
+    const list = document.getElementById("suggestion-list");
+    list.innerHTML = "";
+
+    const q = query(suggestionsRef, orderBy("likes", "desc"));
+    const snapshot = await getDocs(q);
+
+    const suggestionArray = [];
+
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      suggestionArray.push({ id: docSnap.id, ...data });
+
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${data.text} — ${data.likes} likes
+        <button onclick="likeSuggestion('${docSnap.id}')">Like</button>
+      `;
+      list.appendChild(li);
+    });
+
+    // Store top suggestion globally if needed later
+    window.currentTopSuggestion = getTopSuggestion(suggestionArray);
+  }
+
+  async function submitSuggestion() {
+    const input = document.getElementById("suggestion-input");
+    const text = input.value.trim();
+    if (text.length > 0) {
+      await addDoc(suggestionsRef, { text, likes: 0 });
+      input.value = "";
+      renderSuggestions();
+    }
+  }
+
+  async function likeSuggestion(id) {
+    const suggestionDoc = doc(suggestionsRef, id);
+    await updateDoc(suggestionDoc, { likes: increment(1) });
     renderSuggestions();
   }
-}
 
-function likeSuggestion(index) {
-  suggestions[index].likes++;
-  saveSuggestions();
-  renderSuggestions();
-}
+  window.submitSuggestion = submitSuggestion;
+  window.likeSuggestion = likeSuggestion;
 
-document.addEventListener('DOMContentLoaded', renderSuggestions);
+  document.addEventListener("DOMContentLoaded", renderSuggestions);
+</script>
