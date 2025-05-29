@@ -5,6 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Isn't Funny</title>
   <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      updateDoc,
+      doc,
+      increment,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCoXoNXWZABE3RLKZ4A5Q5MD4eI_ikaXq4",
+      authDomain: "ai-isn-t-funny.firebaseapp.com",
+      projectId: "ai-isn-t-funny",
+      storageBucket: "ai-isn-t-funny.appspot.com",
+      messagingSenderId: "87563153287",
+      appId: "1:87563153287:web:1ed3f843a2f5929c43ed22",
+      measurementId: "G-ZVZPZBVRKY"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.AIF_DB = db;
+  </script>
 </head>
 <body>
   <header>
@@ -18,7 +48,7 @@
   <main>
     <section id="latest-comic">
       <h2>Latest Comic</h2>
-      <img src="comics/latest.jpg" alt="Latest AI Comic" id="comic-img" />
+      <img src="" alt="Latest AI Comic" id="comic-img" />
       <p id="comic-prompt">Prompt: <em>Loading...</em></p>
     </section>
 
@@ -38,7 +68,6 @@
     <p>&copy; 2025 AI Isn't Funny</p>
   </footer>
 
-  <!-- Load app.js as a module -->
   <script type="module" src="app.js"></script>
 </body>
 </html>
