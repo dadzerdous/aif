@@ -59,6 +59,34 @@ async function likeSuggestion(id) {
   await updateDoc(suggestionDoc, { likes: increment(1) });
   renderSuggestions();
 }
+
+let countdownSeconds = 3600; // 1 hour
+
+function startCountdown() {
+  const countdownDisplay = document.createElement("div");
+  countdownDisplay.id = "countdown-timer";
+  countdownDisplay.style.fontSize = "18px";
+  countdownDisplay.style.marginTop = "10px";
+  document.getElementById("latest-comic").appendChild(countdownDisplay);
+
+  const interval = setInterval(async () => {
+    countdownSeconds--;
+
+    const mins = Math.floor(countdownSeconds / 60);
+    const secs = countdownSeconds % 60;
+    countdownDisplay.textContent = `⏱️ Next comic in: ${mins}m ${secs}s`;
+
+    if (countdownSeconds <= 0) {
+      clearInterval(interval);
+      countdownDisplay.textContent = "⚙️ Updating comic...";
+      await loadTopSuggestion();
+      await updateComicImage();
+      countdownSeconds = 3600;
+      startCountdown(); // restart after update
+    }
+  }, 1000);
+}
+
 async function updateComicImage() {
   try {
     const response = await fetch("https://5249388e-19bf-4cd3-8dff-d129115982f6-00-o5yb1ky7pz4o.spock.replit.dev/generate", {
