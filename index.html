@@ -2,71 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Isn't Funny</title>
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Firebase SDKs -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      getDocs,
-      updateDoc,
-      doc,
-      increment,
-      query,
-      orderBy
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCoXoNXWZABE3RLKZ4A5Q5MD4eI_ikaXq4",
-      authDomain: "ai-isn-t-funny.firebaseapp.com",
-      projectId: "ai-isn-t-funny",
-      storageBucket: "ai-isn-t-funny.appspot.com",
-      messagingSenderId: "87563153287",
-      appId: "1:87563153287:web:1ed3f843a2f5929c43ed22",
-      measurementId: "G-ZVZPZBVRKY"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    window.AIF_DB = db;
-  </script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f4f4f4;
+      color: #222;
+    }
+    #latest-comic {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    #comic-img {
+      max-width: 90%;
+      height: auto;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+    #countdown-display {
+      font-size: 1.2em;
+      color: #555;
+      margin-top: 10px;
+    }
+    #suggestions {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    #suggestion-list li {
+      margin-bottom: 10px;
+    }
+    button {
+      margin-left: 10px;
+      padding: 4px 8px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>AI Isn't Funny 🤖</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="donate.html">Donate</a>
-    </nav>
-  </header>
+  <h1>AI Isn't Funny</h1>
 
-  <main>
-    <section id="latest-comic">
-      <h2>Latest Comic</h2>
-      <img src="" alt="Latest AI Comic" id="comic-img" />
-      <p id="comic-prompt">Prompt: <em>Loading...</em></p>
-    </section>
+  <section id="latest-comic">
+    <h2>Latest Comic</h2>
+    <img id="comic-img" src="" alt="Latest Comic" />
+    <p id="comic-prompt">Prompt: Loading...</p>
+    <!-- Timer will be injected here -->
+  </section>
 
-    <section id="submit">
-      <h2>Submit a Suggestion</h2>
-      <input type="text" id="suggestion-input" placeholder="e.g. A cat running for president" />
-      <button id="submit-button">Submit</button>
-    </section>
+  <section id="suggestions">
+    <h2>Suggest a Comic Idea</h2>
+    <input type="text" id="suggestion-input" placeholder="Type your suggestion here..." />
+    <button onclick="submitSuggestion()">Submit</button>
 
-    <section id="suggestions">
-      <h2>Vote on Suggestions</h2>
-      <ul id="suggestion-list"></ul>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 AI Isn't Funny</p>
-  </footer>
+    <h3>Suggestions</h3>
+    <ul id="suggestion-list"></ul>
+  </section>
 
   <script type="module" src="app.js"></script>
 </body>
