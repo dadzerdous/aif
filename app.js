@@ -62,30 +62,6 @@ async function likeSuggestion(id) {
 
 let countdownSeconds = 300; // 1 hour
 
-function startCountdown() {
-  const countdownDisplay = document.createElement("div");
-  countdownDisplay.id = "countdown-timer";
-  countdownDisplay.style.fontSize = "18px";
-  countdownDisplay.style.marginTop = "10px";
-  document.getElementById("latest-comic").appendChild(countdownDisplay);
-
-  const interval = setInterval(async () => {
-    countdownSeconds--;
-
-    const mins = Math.floor(countdownSeconds / 60);
-    const secs = countdownSeconds % 60;
-    countdownDisplay.textContent = `⏱️ Next comic in: ${mins}m ${secs}s`;
-
-    if (countdownSeconds <= 0) {
-      clearInterval(interval);
-      countdownDisplay.textContent = "⚙️ Updating comic...";
-      await loadTopSuggestion();
-      await updateComicImage();
-      countdownSeconds = 3600;
-      startCountdown(); // restart after update
-    }
-  }, 1000);
-}
 
 async function updateComicImage() {
   try {
@@ -111,6 +87,33 @@ async function updateComicImage() {
     console.error("❌ Failed to update comic image:", error);
   }
 }
+
+function startCountdown() {
+  const countdownDisplay = document.createElement("div");
+  countdownDisplay.id = "countdown-timer";
+  countdownDisplay.style.fontSize = "18px";
+  countdownDisplay.style.marginTop = "10px";
+  document.getElementById("latest-comic").appendChild(countdownDisplay);
+
+  const interval = setInterval(async () => {
+    countdownSeconds--;
+
+    const mins = Math.floor(countdownSeconds / 60);
+    const secs = countdownSeconds % 60;
+    countdownDisplay.textContent = `⏱️ Next comic in: ${mins}m ${secs}s`;
+
+    if (countdownSeconds <= 0) {
+      clearInterval(interval);
+      countdownDisplay.textContent = "⚙️ Updating comic...";
+      await loadTopSuggestion();
+      await updateComicImage();
+      countdownSeconds = 3600;
+      startCountdown(); // restart after update
+    }
+  }, 1000);
+}
+
+
 window.submitSuggestion = submitSuggestion;
 window.likeSuggestion = likeSuggestion;
 
