@@ -23,16 +23,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
 const suggestionsRef = collection(db, "suggestions");
 
 async function renderSuggestions() {
   const list = document.getElementById("suggestion-list");
   list.innerHTML = "";
-
   const q = query(suggestionsRef, orderBy("likes", "desc"));
   const snapshot = await getDocs(q);
-
   snapshot.forEach((docSnap) => {
     const data = docSnap.data();
     const li = document.createElement("li");
@@ -60,8 +57,14 @@ async function likeSuggestion(id) {
   renderSuggestions();
 }
 
-let countdownSeconds = 300; // 1 hour
-
+async function loadTopSuggestion() {
+  const q = query(suggestionsRef, orderBy("likes", "desc"));
+  const snapshot = await getDocs(q);
+  if (!snapshot.empty) {
+    const top = snapshot.docs[0].data();
+    window.currentTopSuggestion = top;
+  }
+}
 
 async function updateComicImage() {
   try {
@@ -88,6 +91,8 @@ async function updateComicImage() {
   }
 }
 
+let countdownSeconds = 300; // 5 minutes
+
 function startCountdown() {
   const countdownDisplay = document.createElement("div");
   countdownDisplay.id = "countdown-timer";
@@ -97,7 +102,6 @@ function startCountdown() {
 
   const interval = setInterval(async () => {
     countdownSeconds--;
-
     const mins = Math.floor(countdownSeconds / 60);
     const secs = countdownSeconds % 60;
     countdownDisplay.textContent = `⏱️ Next comic in: ${mins}m ${secs}s`;
@@ -107,17 +111,16 @@ function startCountdown() {
       countdownDisplay.textContent = "⚙️ Updating comic...";
       await loadTopSuggestion();
       await updateComicImage();
-      countdownSeconds = 3600;
-      startCountdown(); // restart after update
+      countdownSeconds = 300;
+      startCountdown();
     }
   }, 1000);
 }
 
-
 window.submitSuggestion = submitSuggestion;
 window.likeSuggestion = likeSuggestion;
 
-document.addEventListener("DOMContentLoaded", renderSuggestions);document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   await renderSuggestions();
   await loadTopSuggestion();
   await updateComicImage();
