@@ -94,6 +94,7 @@ async function updateComicImage() {
 let countdownSeconds = 300; // 5 minutes
 
 function startCountdown() {
+  console.log("🚀 Countdown started");
   const countdownDisplay = document.createElement("div");
   countdownDisplay.id = "countdown-timer";
   countdownDisplay.style.fontSize = "18px";
