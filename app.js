@@ -60,7 +60,7 @@ async function likeSuggestion(id) {
   renderSuggestions();
 }
 
-let countdownSeconds = 3600; // 1 hour
+let countdownSeconds = 300; // 1 hour
 
 function startCountdown() {
   const countdownDisplay = document.createElement("div");
@@ -114,4 +114,9 @@ async function updateComicImage() {
 window.submitSuggestion = submitSuggestion;
 window.likeSuggestion = likeSuggestion;
 
-document.addEventListener("DOMContentLoaded", renderSuggestions);
+document.addEventListener("DOMContentLoaded", renderSuggestions);document.addEventListener("DOMContentLoaded", async () => {
+  await renderSuggestions();
+  await loadTopSuggestion();
+  await updateComicImage();
+  startCountdown();
+});
