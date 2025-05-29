@@ -61,7 +61,7 @@ async function likeSuggestion(id) {
 }
 async function updateComicImage() {
   try {
-    const response = await fetch("https://your-replit-name.repl.co/generate", {
+    const response = await fetch("https://5249388e-19bf-4cd3-8dff-d129115982f6-00-o5yb1ky7pz4o.spock.replit.dev/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
